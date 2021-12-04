@@ -1,0 +1,44 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resFlie/again.png</file>
+        <file>resFlie/background.png</file>
+        <file>resFlie/background.wav</file>
+        <file>resFlie/bomb.png</file>
+        <file>resFlie/bomb_supply.png</file>
+        <file>resFlie/bullet_supply.png</file>
+        <file>resFlie/bullet1.png</file>
+        <file>resFlie/bullet2.png</file>
+        <file>resFlie/down.wav</file>
+        <file>resFlie/enemy1.png</file>
+        <file>resFlie/enemy1_down1.png</file>
+        <file>resFlie/enemy1_down2.png</file>
+        <file>resFlie/enemy1_down3.png</file>
+        <file>resFlie/enemy1_down4.png</file>
+        <file>resFlie/enemy2.png</file>
+        <file>resFlie/enemy2_down1.png</file>
+        <file>resFlie/enemy2_down2.png</file>
+        <file>resFlie/enemy2_down3.png</file>
+        <file>resFlie/enemy2_down4.png</file>
+        <file>resFlie/enemy2_hit.png</file>
+        <file>resFlie/enemy3_down1.png</file>
+        <file>resFlie/enemy3_down2.png</file>
+        <file>resFlie/enemy3_down3.png</file>
+        <file>resFlie/enemy3_down4.png</file>
+        <file>resFlie/enemy3_down5.png</file>
+        <file>resFlie/enemy3_down6.png</file>
+        <file>resFlie/enemy3_hit.png</file>
+        <file>resFlie/enemy3_n1.png</file>
+        <file>resFlie/enemy3_n2.png</file>
+        <file>resFlie/gameover.png</file>
+        <file>resFlie/me_destroy_1.png</file>
+        <file>resFlie/me_destroy_2.png</file>
+        <file>resFlie/me_destroy_3.png</file>
+        <file>resFlie/me_destroy_4.png</file>
+        <file>resFlie/me1.png</file>
+        <file>resFlie/me2.png</file>
+        <file>resFlie/pause_nor.png</file>
+        <file>resFlie/pause_pressed.png</file>
+        <file>resFlie/resume_nor.png</file>
+        <file>resFlie/resume_pressed.png</file>
+    </qresource>
+</RCC>
