@@ -30,7 +30,10 @@ public:
     void paintEvent(QPaintEvent*);
 
     //重写鼠标移动事件，名称不能改，此处为函数重载
-    void mouseMoveEvent(QMouseEvent * event);
+   // void mouseMoveEvent(QMouseEvent * event);
+
+    //重载按键事件
+    void keyPressEvent(QKeyEvent *event);
 
     //敌机出场
     void enemPlaneComeOn();

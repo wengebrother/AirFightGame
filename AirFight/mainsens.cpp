@@ -71,7 +71,9 @@ void Mainsens::updatePosition()
 void Mainsens::playGame()
 {
     //启动背景音乐
-    QSound::play(bgmPath);
+    QSound *bgm = new QSound(bgmPath, this);
+       bgm->setLoops(-1);
+       bgm->play();
     //启动定时器
     m_Timer.start();
     //监听定时器发出的信号
@@ -143,7 +145,7 @@ void Mainsens::paintEvent(QPaintEvent *)
 
 
 
-
+/*
 void Mainsens::mouseMoveEvent(QMouseEvent * event)
 {
     //跟随鼠标的位置
@@ -166,6 +168,48 @@ void Mainsens::mouseMoveEvent(QMouseEvent * event)
     }
 
     m_plane_hero.followMouse(x,y);
+
+}
+*/
+void Mainsens::keyPressEvent(QKeyEvent *event)
+{
+     int y=m_plane_hero.m_Plane_Y;
+     int x=m_plane_hero.m_Plane_X;
+    if(event->key()==Qt::Key_W){
+         y= m_plane_hero.m_Plane_Y-10;
+     }else if(event->key()==Qt::Key_S){
+
+         y = m_plane_hero.m_Plane_Y+10;
+    }else if(event->key()==Qt::Key_A){
+
+         x = m_plane_hero.m_Plane_X-10;
+    }else if(event->key()==Qt::Key_D){
+
+          x = m_plane_hero.m_Plane_X+10;
+    }else if(event->key()==Qt::Key_W&&\
+             event->key()==Qt::Key_D){
+    y= m_plane_hero.m_Plane_Y-10;
+    x = m_plane_hero.m_Plane_X+10;
+    }
+
+
+       //边界检测
+        if(x<=0){
+            x=0;
+        }
+        if(x>=screeWidth-m_plane_hero.m_heroPlaneRect.width()){
+
+           x=screeWidth-m_plane_hero.m_heroPlaneRect.width();
+        }
+        if(y<=0){
+            y=0;
+        }
+        if(y>=screehight-m_plane_hero.m_heroPlaneRect.height()){
+          y=screehight-m_plane_hero.m_heroPlaneRect.height();
+        }
+
+        m_plane_hero.followMouse(x,y);
+
 
 }
 
