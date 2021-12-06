@@ -145,51 +145,26 @@ void Mainsens::paintEvent(QPaintEvent *)
 
 
 
-/*
-void Mainsens::mouseMoveEvent(QMouseEvent * event)
-{
-    //跟随鼠标的位置
-    int x = event->x()-m_plane_hero.m_heroPlaneRect.width()/2;
-    int y = event->y()-m_plane_hero.m_heroPlaneRect.height()/2;
 
-   //边界检测
-    if(x<=0){
-        x=0;
-    }
-    if(x>=screeWidth-m_plane_hero.m_heroPlaneRect.width()){
-
-       x=screeWidth-m_plane_hero.m_heroPlaneRect.width();
-    }
-    if(y<=0){
-        y=0;
-    }
-    if(y>=screehight-m_plane_hero.m_heroPlaneRect.height()){
-      y=screehight-m_plane_hero.m_heroPlaneRect.height();
-    }
-
-    m_plane_hero.followMouse(x,y);
-
-}
-*/
 void Mainsens::keyPressEvent(QKeyEvent *event)
 {
      int y=m_plane_hero.m_Plane_Y;
      int x=m_plane_hero.m_Plane_X;
-    if(event->key()==Qt::Key_W){
+
+    if(event->key()==Qt::Key_W&&event->isAutoRepeat()){
          y= m_plane_hero.m_Plane_Y-10;
-     }else if(event->key()==Qt::Key_S){
+     }
+    if(event->key()==Qt::Key_S&&event->isAutoRepeat()){
 
          y = m_plane_hero.m_Plane_Y+10;
-    }else if(event->key()==Qt::Key_A){
+    }
+    if(event->key()==Qt::Key_A&&event->isAutoRepeat()){
 
          x = m_plane_hero.m_Plane_X-10;
-    }else if(event->key()==Qt::Key_D){
+    }
+    if(event->key()==Qt::Key_D&&event->isAutoRepeat()){
 
           x = m_plane_hero.m_Plane_X+10;
-    }else if(event->key()==Qt::Key_W&&\
-             event->key()==Qt::Key_D){
-    y= m_plane_hero.m_Plane_Y-10;
-    x = m_plane_hero.m_Plane_X+10;
     }
 
 
