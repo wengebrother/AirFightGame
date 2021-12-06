@@ -50,6 +50,12 @@ void Mainsens::initSence()
     //随机数种子
     srand((unsigned int)time(NULL));
 
+    //移动控制标志
+    for(int i=0;i<4;i++){
+
+        moveFlag[i]=false;
+    }
+
     //测试代码
 
 }
@@ -93,7 +99,7 @@ void Mainsens::playGame()
     enemPlaneComeOn();
     updatePosition();
     colliDetec();
-
+    moveControl();
     update();
     });
 }
@@ -185,48 +191,44 @@ void Mainsens::mouseReleaseEvent(QMouseEvent *event)
      m_plane_hero.trigger=false;
     }
 
+
+
 }
 
 
 void Mainsens::keyPressEvent(QKeyEvent *event)
 {
-     int y=m_plane_hero.m_Plane_Y;
-     int x=m_plane_hero.m_Plane_X;
-    if(event->key()==Qt::Key_W&&event->isAutoRepeat()){
-         y= m_plane_hero.m_Plane_Y-10;
+
+    if(event->key()==Qt::Key_W){
+         moveFlag[0]=true;
      }
-    if(event->key()==Qt::Key_S&&event->isAutoRepeat()){
-
-         y = m_plane_hero.m_Plane_Y+10;
-    }
-    if(event->key()==Qt::Key_A&&event->isAutoRepeat()){
-
-         x = m_plane_hero.m_Plane_X-10;
-    }
-    if(event->key()==Qt::Key_D&&event->isAutoRepeat()){
-
-          x = m_plane_hero.m_Plane_X+10;
-    }
+    if(event->key()==Qt::Key_S){
+         moveFlag[1]=true;
+     }
+    if(event->key()==Qt::Key_A){
+         moveFlag[2]=true;
+     }
+    if(event->key()==Qt::Key_D){
+         moveFlag[3]=true;
+     }
 
 
-       //边界检测
-        if(x<=0){
-            x=0;
-        }
-        if(x>=screeMouse-m_plane_hero.m_heroPlaneRect.width()){
+}
 
-           x=screeMouse-m_plane_hero.m_heroPlaneRect.width();
-        }
-        if(y<=0){
-            y=0;
-        }
-        if(y>=screehight-m_plane_hero.m_heroPlaneRect.height()){
-          y=screehight-m_plane_hero.m_heroPlaneRect.height();
-        }
-
-        m_plane_hero.followMouse(x,y);
-
-
+void Mainsens::keyReleaseEvent(QKeyEvent *event)
+{
+    if(event->key()==Qt::Key_W){
+         moveFlag[0]=false;
+     }
+    if(event->key()==Qt::Key_S){
+         moveFlag[1]=false;
+     }
+    if(event->key()==Qt::Key_A){
+         moveFlag[2]=false;
+     }
+    if(event->key()==Qt::Key_D){
+         moveFlag[3]=false;
+     }
 }
 
 void Mainsens::enemPlaneComeOn()
@@ -305,6 +307,52 @@ void Mainsens::colliDetec()
             }
         }
     }
+}
+
+void Mainsens::moveControl()
+{
+    int y=m_plane_hero.m_Plane_Y;
+    int x=m_plane_hero.m_Plane_X;
+    //
+   if(moveFlag[0]){
+       y=m_plane_hero.m_Plane_Y-6;
+
+   }
+
+   if(moveFlag[1]){
+       y=m_plane_hero.m_Plane_Y+6;
+
+   }
+
+   if(moveFlag[2]){
+
+       x=m_plane_hero.m_Plane_X-6;
+   }
+
+   if(moveFlag[3]){
+
+       x=m_plane_hero.m_Plane_X+6;
+   }
+
+
+     //边界检测
+      if(x<=0){
+          x=0;
+      }
+      if(x>=screeMouse-m_plane_hero.m_heroPlaneRect.width()){
+
+         x=screeMouse-m_plane_hero.m_heroPlaneRect.width();
+      }
+      if(y<=0){
+          y=0;
+      }
+      if(y>=screehight-m_plane_hero.m_heroPlaneRect.height()){
+        y=screehight-m_plane_hero.m_heroPlaneRect.height();
+      }
+
+      m_plane_hero.followMouse(x,y);
+
+
 }
 
 

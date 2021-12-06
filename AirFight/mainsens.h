@@ -38,8 +38,14 @@ public:
     //鼠标松开事件
     void mouseReleaseEvent(QMouseEvent *event);
 
-    //重载按键事件
+    //重载按键按下事件
     void keyPressEvent(QKeyEvent *event);
+
+    //按键松开
+    void keyReleaseEvent(QKeyEvent *event);
+
+    //飞机移动控制
+    void moveControl();
 
     //敌机出场
     void enemPlaneComeOn();
@@ -47,8 +53,10 @@ public:
     //碰撞检测
     void colliDetec();
 
+
     //测试代码 爆炸效果调试
-    void bombTest();
+
+
 public:
     QTimer m_Timer;
     Map m_map;
@@ -57,9 +65,10 @@ public:
     EnemyPlane enemPlaneS[enemNum];
     int enemPlaneOut_count;
     Bomb bombs[bombNum];
-
+    bool moveFlag[4];
 
     //测试代码
+
 
 };
 #endif // MAINSENS_H
