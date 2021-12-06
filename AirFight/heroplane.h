@@ -31,6 +31,8 @@ public:
     //武器系统参数
     Weapon weaponRight;
     Weapon weaponLeft;
+    bool trigger; //扳机
+    bool trigger_limit;//鼠标必须在场景中才可以击发
 
 };
 

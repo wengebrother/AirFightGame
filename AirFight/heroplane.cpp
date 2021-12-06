@@ -12,18 +12,24 @@ heroPlane::heroPlane()
     m_heroPlaneRect.setHeight(m_heroPlane.height());
     m_heroPlaneRect.moveTo(m_Plane_X,m_Plane_Y);
 
+    trigger=false;
+
 }
 
 void heroPlane::weaponSystem_shoot()
 {
-    //左侧武器发射子弹
-    weaponLeft.getWeapon(m_Plane_X,m_Plane_Y);
-    weaponLeft.weaponShoot(15,50);
-    calBulletPos(&weaponLeft);
+    //扳机触发
+    if((trigger==true)&&(trigger_limit)){
+        //左侧武器发射子弹
+        weaponLeft.getWeapon(m_Plane_X,m_Plane_Y);
+        weaponLeft.weaponShoot(15,50);
+        //右侧武器发射子弹aaaaaaaaa
+        weaponRight.getWeapon(m_Plane_X,m_Plane_Y);
+        weaponRight.weaponShoot(80,50);
+    }
 
-    //右侧武器发射子弹
-    weaponRight.getWeapon(m_Plane_X,m_Plane_Y);
-    weaponRight.weaponShoot(80,50);
+    //计算发射出去的子弹位置
+    calBulletPos(&weaponLeft);
     calBulletPos(&weaponRight);
 
 }

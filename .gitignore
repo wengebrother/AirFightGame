@@ -1,0 +1,13 @@
+Debug/
+Release/
+html/
+build/
+build-AirFight-Desktop_Qt_5_13_2_MinGW_64_bit-Debug/
+.vscode/.cortex-debug.*.json
+*.swp
+*.bak
+*.a
+*.o
+*.elf
+*.zip
+

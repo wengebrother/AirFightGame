@@ -5,14 +5,24 @@
 #include <QMouseEvent>
 #include <ctime>
 #include <QSound>
+#include <QPushButton>
+#include <QDebug>
 Mainsens::Mainsens(QWidget *parent)
     : QWidget(parent)
 {
     //初始化场景
     initSence();
 
+    //添加按钮
+    QPushButton *fireButton=new QPushButton("Fire");
+    fireButton->move(500,400);
+    fireButton->setParent(this);
+
     //启动游戏
     playGame();
+
+    //显示追踪鼠标
+    setMouseTracking(true);
 
 }
 
@@ -48,8 +58,9 @@ void Mainsens::updatePosition()
 {
       //更新地图坐标
       m_map.mapPosition();
-      //战机开火
-      m_plane_hero.weaponSystem_shoot();
+
+      //更新子弹位置
+       m_plane_hero.weaponSystem_shoot();
 
       //更新敌机坐标
 
@@ -141,16 +152,46 @@ void Mainsens::paintEvent(QPaintEvent *)
 
 }
 
+void Mainsens::mouseMoveEvent(QMouseEvent *event)
+{
+
+    if(event->x()>screeMouse){
+       this->setCursor(Qt::ArrowCursor); //显示鼠标
+       m_plane_hero.trigger_limit=false;
+    }
+    else{
+       //qDebug("隐藏鼠标");
+
+        this->setCursor(Qt::BlankCursor); //隐藏鼠标
+        m_plane_hero.trigger_limit=true;
+    }
+
+}
+
+void Mainsens::mousePressEvent(QMouseEvent *event)
+{
+    if(event->button()==Qt::LeftButton){
+
+     m_plane_hero.trigger=true;
+    }
+
+}
 
 
+void Mainsens::mouseReleaseEvent(QMouseEvent *event)
+{
+    if(event->button()==Qt::LeftButton){
 
+     m_plane_hero.trigger=false;
+    }
+
+}
 
 
 void Mainsens::keyPressEvent(QKeyEvent *event)
 {
      int y=m_plane_hero.m_Plane_Y;
      int x=m_plane_hero.m_Plane_X;
-
     if(event->key()==Qt::Key_W&&event->isAutoRepeat()){
          y= m_plane_hero.m_Plane_Y-10;
      }
@@ -172,9 +213,9 @@ void Mainsens::keyPressEvent(QKeyEvent *event)
         if(x<=0){
             x=0;
         }
-        if(x>=screeWidth-m_plane_hero.m_heroPlaneRect.width()){
+        if(x>=screeMouse-m_plane_hero.m_heroPlaneRect.width()){
 
-           x=screeWidth-m_plane_hero.m_heroPlaneRect.width();
+           x=screeMouse-m_plane_hero.m_heroPlaneRect.width();
         }
         if(y<=0){
             y=0;
@@ -198,13 +239,15 @@ void Mainsens::enemPlaneComeOn()
     for(int i=0;i<enemNum;i++){
         if(enemPlaneS[i].enemy_state){
             enemPlaneS[i].enemy_state=false;
-            enemPlaneS[i].enemyPlane_x=rand()%(screeWidth-enemPlaneS[i].enemyPlane_rect.width());
+            enemPlaneS[i].enemyPlane_x=rand()%(screeMouse-enemPlaneS[i].enemyPlane_rect.width());
             enemPlaneS[i].enemyPlane_y=0;
 
             break;
         }
     }
 }
+
+
 
 void Mainsens::colliDetec()
 {

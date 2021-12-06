@@ -30,14 +30,19 @@ public:
     void paintEvent(QPaintEvent*);
 
     //重写鼠标移动事件，名称不能改，此处为函数重载
-   // void mouseMoveEvent(QMouseEvent * event);
+    void mouseMoveEvent(QMouseEvent * event);
+
+    //鼠标点击事件
+    void mousePressEvent(QMouseEvent * event);
+
+    //鼠标松开事件
+    void mouseReleaseEvent(QMouseEvent *event);
 
     //重载按键事件
     void keyPressEvent(QKeyEvent *event);
 
     //敌机出场
     void enemPlaneComeOn();
-
 
     //碰撞检测
     void colliDetec();
@@ -52,6 +57,7 @@ public:
     EnemyPlane enemPlaneS[enemNum];
     int enemPlaneOut_count;
     Bomb bombs[bombNum];
+
 
     //测试代码
 

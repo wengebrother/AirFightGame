@@ -3,8 +3,9 @@
 
 
 /**屏幕尺寸参数**/
-#define screeWidth  480
+#define screeWidth  580//480
 #define screehight  700
+#define screeMouse  480//鼠标显示区域
 
 
 /******游戏参数配置*******/
