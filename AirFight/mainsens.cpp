@@ -18,10 +18,15 @@ Mainsens::Mainsens(QWidget *parent)
     fireButton->move(500,400);
     fireButton->setParent(this);
 
+
+
+    //按钮信号
+    connect(fireButton,SIGNAL(clicked()),this,SLOT(functionSlot()));
+
     //启动游戏
     playGame();
 
-    //显示追踪鼠标
+    //显式追踪鼠标
     setMouseTracking(true);
 
 }
@@ -46,6 +51,15 @@ void Mainsens::initSence()
 
     //初始化敌机出场间隔记时参数
     enemPlaneOut_count=0;
+
+
+    //初始化爆炸效果路径
+   bombPlayer.str=bombPlayerPicPath;
+   bombPlayer.PathSet();
+   for(int k=0;k<bombNum;k++){
+   bombs[k].str=bombPicPath;
+   bombs[k].PathSet();
+   }
 
     //随机数种子
     srand((unsigned int)time(NULL));
@@ -76,13 +90,32 @@ void Mainsens::updatePosition()
           }
       }
 
-      //更新爆炸的位置
+      //更新玩家生命状态
+      if(m_plane_hero.stateOfLife==false){
+
+          m_plane_hero.stateOfReady=false;
+          m_plane_hero.m_Plane_X=(screeWidth-m_plane_hero.m_heroPlane.width())/2+250;
+          m_plane_hero.m_Plane_Y=(screeWidth-m_plane_hero.m_heroPlane.height())/2+300;
+          m_plane_hero.m_heroPlaneRect.moveTo(m_plane_hero.m_Plane_X,m_plane_hero.m_Plane_Y);
+          m_plane_hero.stateOfLife=true;
+
+
+      }
+
+
+      //更新敌机爆炸的位置
       for(int k=0;k<bombNum;k++){
           if(bombs[k].bomb_state==false){
               bombs[k].updateInfo();
           }
 
       }
+      //更新玩家爆炸的位置
+      if(bombPlayer.bomb_state==false){
+         bombPlayer.updateInfo();
+      }
+
+
 }
 
 void Mainsens::playGame()
@@ -94,14 +127,15 @@ void Mainsens::playGame()
     //启动定时器
     m_Timer.start();
     //监听定时器发出的信号
-    connect(&m_Timer,&QTimer::timeout,[=](){\
-
+    connect(&m_Timer,&QTimer::timeout,[=](){
     enemPlaneComeOn();
     updatePosition();
-    colliDetec();
+    colliDetec();//子弹和敌机的碰撞检测
     moveControl();
     update();
     });
+
+
 }
 
 void Mainsens::paintEvent(QPaintEvent *)
@@ -113,7 +147,11 @@ void Mainsens::paintEvent(QPaintEvent *)
 
 
        //绘制英雄飞机
-       painter.drawPixmap(m_plane_hero.m_Plane_X,m_plane_hero.m_Plane_Y,m_plane_hero.m_heroPlane);
+       if(m_plane_hero.stateOfLife){
+           painter.drawPixmap(m_plane_hero.m_Plane_X,m_plane_hero.m_Plane_Y,m_plane_hero.m_heroPlane);
+
+       }
+
 
 
        //绘制子弹
@@ -145,13 +183,22 @@ void Mainsens::paintEvent(QPaintEvent *)
        }
 
 
-       //绘制爆炸效果
+       //绘制敌机爆炸效果
        for(int n=0;n<bombNum;n++){
            if(bombs[n].bomb_state==false){
                painter.drawPixmap(bombs[n].bomb_x,bombs[n].bomb_y,\
                            bombs[n].bomb_pics[bombs[n].bomb_index]\
                        );
            }
+
+       }
+
+       //绘制 玩家爆炸效果
+       if(bombPlayer.bomb_state==false){
+           painter.drawPixmap(bombPlayer.bomb_x,bombPlayer.bomb_y,\
+                       bombPlayer.bomb_pics[bombPlayer.bomb_index]\
+                   );
+
 
        }
 
@@ -165,7 +212,7 @@ void Mainsens::mouseMoveEvent(QMouseEvent *event)
        this->setCursor(Qt::ArrowCursor); //显示鼠标
        m_plane_hero.trigger_limit=false;
     }
-    else{
+    else if(event->x()<screeMouse&&m_plane_hero.stateOfReady){
        //qDebug("隐藏鼠标");
 
         this->setCursor(Qt::BlankCursor); //隐藏鼠标
@@ -260,8 +307,10 @@ void Mainsens::colliDetec()
             continue;
         }
 
+        //敌机与玩家子弹的碰撞检测
         for(int i=0;i<bulletNum;i++){
 
+            //左侧武器的子弹与敌机的碰撞检测
             if(m_plane_hero.weaponLeft.bullets[i].bullet_state==false){
 
                 if(m_plane_hero.weaponLeft.bullets[i]\
@@ -286,6 +335,7 @@ void Mainsens::colliDetec()
                 }
             }
 
+            //右侧武器的子弹与敌机的碰撞检测
              if(m_plane_hero.weaponRight.bullets[i].bullet_state==false){
                 if(m_plane_hero.weaponRight.bullets[i]\
                         .bullet_rect.intersects(enemPlaneS[m]\
@@ -306,7 +356,34 @@ void Mainsens::colliDetec()
                 }
             }
         }
+
+       //敌机与玩家碰撞检测
+        if(m_plane_hero.m_heroPlaneRect
+           .intersects(enemPlaneS[m]
+           .enemyPlane_rect)){
+
+            m_plane_hero.stateOfLife=false;
+            enemPlaneS[m].enemy_state=true;
+
+            //碰撞后的爆炸效果
+            if(bombPlayer.bomb_state){
+                QSound::play(bombBgmPath);
+                bombPlayer.bomb_state=false;
+                bombPlayer.bomb_x=m_plane_hero.m_Plane_X;
+                bombPlayer.bomb_y=m_plane_hero.m_Plane_Y;
+                //break;
+            }
+        }
+
+
+
+
     }
+}
+
+void Mainsens::functionSlot()
+{
+    m_plane_hero.gotoFight();
 }
 
 void Mainsens::moveControl()
@@ -336,21 +413,32 @@ void Mainsens::moveControl()
 
 
      //边界检测
-      if(x<=0){
-          x=0;
-      }
-      if(x>=screeMouse-m_plane_hero.m_heroPlaneRect.width()){
+   if(m_plane_hero.stateOfReady){
 
-         x=screeMouse-m_plane_hero.m_heroPlaneRect.width();
-      }
-      if(y<=0){
-          y=0;
-      }
-      if(y>=screehight-m_plane_hero.m_heroPlaneRect.height()){
-        y=screehight-m_plane_hero.m_heroPlaneRect.height();
-      }
+       if(x<=0){
+           x=0;
+       }
+       if(x>=screeMouse-m_plane_hero.m_heroPlaneRect.width()){
 
-      m_plane_hero.followMouse(x,y);
+          x=screeMouse-m_plane_hero.m_heroPlaneRect.width();
+       }
+       if(y<=0){
+           y=0;
+       }
+       if(y>=screehight-m_plane_hero.m_heroPlaneRect.height()){
+         y=screehight-m_plane_hero.m_heroPlaneRect.height();
+       }
+
+
+
+   }
+
+//是否连接按键控制
+   if(m_plane_hero.stateOfReady){
+
+     m_plane_hero.followControl(x,y);
+   }
+
 
 
 }

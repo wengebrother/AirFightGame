@@ -3,7 +3,7 @@
 
 
 /**屏幕尺寸参数**/
-#define screeWidth  580//480
+#define screeWidth  600//480
 #define screehight  700
 #define screeMouse  480//鼠标显示区域
 
@@ -39,10 +39,14 @@
 
 
 /************爆炸参数配置**********/
+//敌机爆炸路径
 #define bombPicPath  ":/resFlie/enemy1_down%1.png"
+//玩家爆炸路径
+#define bombPlayerPicPath  ":/resFlie/me_destroy_%1.png"
 #define bombNum    5  //爆炸数量
 #define bombMax     4   //爆炸图片最大索引
 #define bombIn     10    //时间间隔
+
 
 /************音效参数配置**********/
 #define bgmPath ":/resFlie/background.wav"

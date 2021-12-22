@@ -3,12 +3,6 @@
 Bomb::Bomb()
 {
 
-    //将所有的爆炸效果图放入数组中
-    for(int m=1; m<= bombMax ;m++)
-    {
-        QString str=QString(bombPicPath).arg(m);
-        bomb_pics.push_back(QPixmap(str));
-    }
 
 
     //坐标初始化
@@ -45,20 +39,17 @@ void Bomb::updateInfo()
 
     }
 
+}
 
-    /*if(bomb_state){
-        return;
+void Bomb::PathSet()
+{
+
+    QString str2;
+    //将所有的爆炸效果图放入数组中
+
+    for(int m=1; m<= bombMax ;m++)
+    {
+        str2=QString(str).arg(m);
+        bomb_pics.push_back(QPixmap(str2));
     }
-    bomb_cont++;
-    if(bomb_cont<bombIn){
-       return;
-    }
-    bomb_cont=0;
-    bomb_index++;
-    if(bomb_index>bombMax-1){
-        bomb_index=0;
-        bomb_state=true;
-
-    }*/
-
 }

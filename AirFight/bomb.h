@@ -9,8 +9,10 @@ public:
     Bomb();
     //更新信息（图标 时间间隔）
     void updateInfo();
+    void PathSet();
 
 public:
+    //爆炸效果资源
     QVector<QPixmap> bomb_pics;
 
     //爆炸的位置
@@ -25,6 +27,9 @@ public:
 
     //爆炸图标记录
     int bomb_index;
+
+    //爆炸效果图路径
+    QString str;
 
 };
 

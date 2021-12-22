@@ -5,6 +5,7 @@
 //#include "bullet.h"
 #include "weapon.h"
 #include "config.h"
+#include <QDebug>
 class heroPlane
 {
 public:
@@ -14,10 +15,13 @@ public:
     void weaponSystem_shoot();
 
     //飞机控制器：跟随鼠标位置
-    void followMouse(int x,int y);
+    void followControl(int x,int y);
 
     //计算射出去的子弹坐标
     void calBulletPos(Weapon * weapSub);
+
+    //出场
+    void gotoFight();
 
 public:
     //主角飞机图片
@@ -27,6 +31,12 @@ public:
     //飞机坐标
     int m_Plane_X;
     int m_Plane_Y;
+
+    //玩家存活标志
+    bool stateOfLife;
+
+    //出场标志
+    bool stateOfReady;
 
     //武器系统参数
     Weapon weaponRight;

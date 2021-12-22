@@ -54,17 +54,34 @@ public:
     void colliDetec();
 
 
-    //测试代码 爆炸效果调试
-
+    //测试代码
+public slots:
+    void functionSlot();
 
 public:
+    //定时器
     QTimer m_Timer;
+
+    //地图
     Map m_map;
+
+    //英雄飞机
     heroPlane m_plane_hero;
 
+    //敌机
     EnemyPlane enemPlaneS[enemNum];
+
+    //敌机出场间隔记时参数
     int enemPlaneOut_count;
+
+    //敌机爆炸场景
     Bomb bombs[bombNum];
+
+
+    //玩家爆炸场景
+    Bomb bombPlayer;
+
+    //键盘移动控制标志
     bool moveFlag[4];
 
     //测试代码
