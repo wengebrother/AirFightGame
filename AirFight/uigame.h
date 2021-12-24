@@ -19,11 +19,13 @@ public:
 signals:
 
     void startGameSignal();
+    void quitAppSignal();
 public slots:
      void sendSignal();
 
 public:
     QPushButton* start_btn;
+    QPushButton* quit_btn;
     QPixmap UI_map;
     QPixmap UI_button;
     Map testMap;

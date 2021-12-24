@@ -40,6 +40,12 @@ public:
     //出场标志
     bool stateOfReady;
 
+    //玩家出场无敌时间
+    int noOneTime;
+
+    //玩家无敌状态标志
+    bool noOneState;
+
     //武器系统参数
     Weapon weaponRight;
     Weapon weaponLeft;

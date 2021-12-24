@@ -3,12 +3,15 @@
 #include <QPainter>
 UIgame::UIgame(QWidget *parent) : QWidget(parent)
 {
-     //隐藏边框
-    //setWindowFlags(Qt::FramelessWindowHint|Qt::WindowStaysOnTopHint);
+
+
+    //设置界面
     this->setWindowTitle("文哥出品-雷霆空战");
     setFixedSize(800,400);
+    //隐藏边框
+    //setWindowFlags(Qt::FramelessWindowHint|Qt::WindowStaysOnTopHint);
     //this->resize(QSize(800, 400));
-    setWindowIcon(QIcon(gameIconPath));
+    setWindowIcon(QIcon(UIitemPath));//设置图标
 
     //加载图片
     UI_map.load(UImapPath);
@@ -22,10 +25,21 @@ UIgame::UIgame(QWidget *parent) : QWidget(parent)
     start_btn->setIconSize(QSize(150,54));//设置按钮图标大小
     start_btn->setIcon(QIcon(UIbuttomPath));
 
+    QFont ft;
+    ft.setPointSize(26);
+    quit_btn=new QPushButton(this);
+    quit_btn->setFont(ft);
+    quit_btn->setText("关闭游戏");
+    quit_btn->move(500,100);
+    quit_btn->setFixedSize(150,54);//设置按钮大小
+    quit_btn->setIconSize(QSize(150,54));//设置按钮图标大小
+    //quit_btn->setIcon(QIcon(UIbuttomPath));
+
+
 
     //连接信号
     connect(this->start_btn,SIGNAL(clicked()),this,SLOT(sendSignal()));
-
+    connect(this->quit_btn,SIGNAL(clicked()),this,SIGNAL(quitAppSignal()));
    // QImage image(QString(":/image/sf.png"));
     //this->setPixmap(QPixmap::fromImage(image));
 

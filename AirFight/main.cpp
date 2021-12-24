@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     UIgame myUI;
     UI=&myUI;
     myUI.show();
-
+    QObject::connect(UI,SIGNAL(quitAppSignal()),&a,SLOT(quit()));
     Mainsens w;
     return a.exec();
 }

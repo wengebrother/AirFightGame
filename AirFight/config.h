@@ -17,6 +17,7 @@
 /*****UI参数配置********/
 #define UImapPath "D:/Learn/QTlearnProject/AirFight/AirFight/resFlie/UI12.png"
 #define UIbuttomPath "D:/Learn/QTlearnProject/AirFight/AirFight/resFlie/clipboard.png"
+#define UIitemPath ":/resFlie/tubiao67.png"
 /********地图参数配置************/
 #define gameMapPath "D:/Learn/QTlearnProject/AirFight/AirFight/resFlie/background.png"
 #define gameMapRollSpeed 2

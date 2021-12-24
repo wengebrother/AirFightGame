@@ -62,6 +62,7 @@ public slots:
     void functionSlot();
     void getSubWidgetSignal();
     void back2UI();
+    void changeNoOneStateOfPlayer();
 
 public:
     //定时器
@@ -94,6 +95,9 @@ private:
     QLabel* score;
     QString strOfscore;
 
+    //记录无敌时间
+    QLabel* noOneTimeLabel;
+    QString strOfTime ;
     //测试代码
 
 

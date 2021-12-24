@@ -39,6 +39,7 @@ Mainsens::Mainsens(QWidget *parent)
     connect(fireButton,SIGNAL(clicked()),this,SLOT(functionSlot()));
     connect(backButton,SIGNAL(clicked()),this,SLOT(back2UI()));
     connect(UI,SIGNAL(startGameSignal()),this,SLOT(getSubWidgetSignal()));
+    connect(fireButton,SIGNAL(clicked()),this,SLOT(changeNoOneStateOfPlayer()));
     //启动游戏
     playGame();
 
@@ -91,13 +92,24 @@ void Mainsens::initSence()
 
     //创建积分器
     QFont ft;
-    ft.setPointSize(26);
+    ft.setPointSize(16);
     strOfscore ="0";
     score =new QLabel(this);
     score->setText(strOfscore);
     score->setFixedSize(100,100);
-    score->move(530,260);
+    score->move(490,260);
     score->setFont(ft);
+
+    //计时
+    strOfTime="0";
+    noOneTimeLabel=new QLabel(this);
+    noOneTimeLabel->setFixedSize(100,100);
+    noOneTimeLabel->move(490,200);
+    noOneTimeLabel->setText(strOfTime);
+    noOneTimeLabel->setFont(ft);
+
+
+
     //测试代码
 
 }
@@ -146,9 +158,24 @@ void Mainsens::updatePosition()
          bombPlayer.updateInfo();
       }
 
-      //更新玩家分数
-      strOfscore = QString::number(m_plane_hero.scoersOfPlayer, 10);
+      //更新玩家分数 QString::number(m_plane_hero.scoersOfPlayer, 10);
+      strOfscore =QString("击落：%1").arg(m_plane_hero.scoersOfPlayer);
       score->setText(strOfscore);
+
+      //更新玩家的时间显示
+       strOfTime=QString("隐身：%1").arg(m_plane_hero.noOneTime/100);
+       noOneTimeLabel->setText(strOfTime);
+
+      //更新玩家的无敌状态
+      if(m_plane_hero.noOneState==true){
+          m_plane_hero.noOneTime--;
+          if(m_plane_hero.noOneTime<=0){
+
+              m_plane_hero.noOneState=false;
+          }
+
+      }
+
 
 
 }
@@ -404,24 +431,28 @@ void Mainsens::colliDetec()
         }
 
        //敌机与玩家碰撞检测
-        if(m_plane_hero.m_heroPlaneRect
-           .intersects(enemPlaneS[m]
-           .enemyPlane_rect)){
+        if(!m_plane_hero.noOneState){
+            if(m_plane_hero.m_heroPlaneRect
+               .intersects(enemPlaneS[m]
+               .enemyPlane_rect)){
 
-            m_plane_hero.stateOfLife=false;
-            enemPlaneS[m].enemy_state=true;
+                m_plane_hero.stateOfLife=false;
+                enemPlaneS[m].enemy_state=true;
 
-            //得分清零
-            m_plane_hero.scoersOfPlayer=0;
-            //碰撞后的爆炸效果
-            if(bombPlayer.bomb_state){
-                QSound::play(bombBgmPath);
-                bombPlayer.bomb_state=false;
-                bombPlayer.bomb_x=m_plane_hero.m_Plane_X;
-                bombPlayer.bomb_y=m_plane_hero.m_Plane_Y;
-                //break;
+                //得分清零
+                m_plane_hero.scoersOfPlayer=0;
+                //碰撞后的爆炸效果
+                if(bombPlayer.bomb_state){
+                    QSound::play(bombBgmPath);
+                    bombPlayer.bomb_state=false;
+                    bombPlayer.bomb_x=m_plane_hero.m_Plane_X;
+                    bombPlayer.bomb_y=m_plane_hero.m_Plane_Y;
+                    //break;
+                }
             }
+
         }
+
 
 
 
@@ -448,6 +479,13 @@ void Mainsens::back2UI()
     qDebug("测试");
     this->hide();
     UI->show();
+}
+
+void Mainsens::changeNoOneStateOfPlayer()
+{
+    m_plane_hero.noOneTime=500;//5秒
+    m_plane_hero.noOneState=true;
+    qDebug("进入隐身状态");
 }
 
 void Mainsens::moveControl()

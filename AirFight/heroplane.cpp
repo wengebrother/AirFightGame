@@ -24,6 +24,9 @@ heroPlane::heroPlane()
     trigger=false;
     //初始化玩家得分
     scoersOfPlayer=0;
+    //初始化无敌参数
+    noOneTime=0;
+    noOneState=false;
 
 }
 
