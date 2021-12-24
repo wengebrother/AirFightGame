@@ -7,6 +7,8 @@
 #include "heroplane.h"
 #include "enemyplane.h"
 #include "bomb.h"
+#include "uigame.h"
+//extern UIgame* UI;
 class Mainsens : public QWidget
 {
     Q_OBJECT
@@ -53,10 +55,13 @@ public:
     //碰撞检测
     void colliDetec();
 
-
+    //
+    //void getUI(UIgame* UI);
     //测试代码
 public slots:
     void functionSlot();
+    void getSubWidgetSignal();
+    void back2UI();
 
 public:
     //定时器
@@ -83,6 +88,10 @@ public:
 
     //键盘移动控制标志
     bool moveFlag[4];
+
+private:
+    //UI界面
+    //UIgame* gameUI;
 
     //测试代码
 

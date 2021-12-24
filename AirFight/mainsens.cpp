@@ -7,22 +7,29 @@
 #include <QSound>
 #include <QPushButton>
 #include <QDebug>
+#include <uigame.h>
+extern UIgame* UI;
 Mainsens::Mainsens(QWidget *parent)
     : QWidget(parent)
 {
+
     //初始化场景
     initSence();
 
-    //添加按钮
-    QPushButton *fireButton=new QPushButton("Fire");
+    //添加出场按钮
+    QPushButton *fireButton=new QPushButton(this);
+    fireButton->setText("出发");
     fireButton->move(500,400);
-    fireButton->setParent(this);
+    //fireButton->setParent(this);
+    QPushButton *backButton=new QPushButton(this);
+    backButton->setText("返回UI界面");
+    backButton->move(500,300);
 
 
-
-    //按钮信号
+    //连接信号
     connect(fireButton,SIGNAL(clicked()),this,SLOT(functionSlot()));
-
+    connect(backButton,SIGNAL(clicked()),this,SLOT(back2UI()));
+    connect(UI,SIGNAL(startGameSignal()),this,SLOT(getSubWidgetSignal()));
     //启动游戏
     playGame();
 
@@ -37,6 +44,7 @@ Mainsens::~Mainsens()
 
 void Mainsens::initSence()
 {
+
     //设置窗口固定尺寸
     setFixedSize(screeWidth,screehight);
 
@@ -93,10 +101,13 @@ void Mainsens::updatePosition()
       //更新玩家生命状态
       if(m_plane_hero.stateOfLife==false){
 
+          //当玩家被击落后，更新为未出场状态，飞机回到初始位置
           m_plane_hero.stateOfReady=false;
           m_plane_hero.m_Plane_X=(screeWidth-m_plane_hero.m_heroPlane.width())/2+250;
           m_plane_hero.m_Plane_Y=(screeWidth-m_plane_hero.m_heroPlane.height())/2+300;
+          //更新边框位置，跟图像保持一致
           m_plane_hero.m_heroPlaneRect.moveTo(m_plane_hero.m_Plane_X,m_plane_hero.m_Plane_Y);
+          //更新飞机的生命状态，被击落后立马复活
           m_plane_hero.stateOfLife=true;
 
 
@@ -212,11 +223,18 @@ void Mainsens::mouseMoveEvent(QMouseEvent *event)
        this->setCursor(Qt::ArrowCursor); //显示鼠标
        m_plane_hero.trigger_limit=false;
     }
-    else if(event->x()<screeMouse&&m_plane_hero.stateOfReady){
-       //qDebug("隐藏鼠标");
-
+    //鼠标在规定区域并且飞机已经出场的情况下才可以发射子弹
+    else
+        {
+        //qDebug("隐藏鼠标");
         this->setCursor(Qt::BlankCursor); //隐藏鼠标
-        m_plane_hero.trigger_limit=true;
+        if(m_plane_hero.stateOfReady){
+
+           m_plane_hero.trigger_limit=true;
+        }else{
+          m_plane_hero.trigger_limit=false;
+        }
+
     }
 
 }
@@ -381,9 +399,28 @@ void Mainsens::colliDetec()
     }
 }
 
+/*void Mainsens::getUI(UIgame *UI)
+{
+    //gameUI=UI;
+}*/
+
 void Mainsens::functionSlot()
 {
     m_plane_hero.gotoFight();
+}
+
+void Mainsens::getSubWidgetSignal()
+{
+    qDebug("获得UI信号");
+    UI->hide();
+    this->show();
+}
+
+void Mainsens::back2UI()
+{
+    qDebug("测试");
+    this->hide();
+    UI->show();
 }
 
 void Mainsens::moveControl()

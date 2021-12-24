@@ -23,6 +23,7 @@ SOURCES += \
     main.cpp \
     mainsens.cpp \
     map.cpp \
+    uigame.cpp \
     weapon.cpp
 
 HEADERS += \
@@ -33,6 +34,7 @@ HEADERS += \
     heroplane.h \
     mainsens.h \
     map.h \
+    uigame.h \
     weapon.h
 
 # Default rules for deployment.
