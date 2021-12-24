@@ -19,7 +19,7 @@ Mainsens::Mainsens(QWidget *parent)
     //添加出场按钮
     QPushButton *fireButton=new QPushButton(this);
     fireButton->setText("起飞");
-    fireButton->move(500,400);
+    fireButton->move(490,400);
     fireButton->setFixedSize(100,100);
     //fireButton->setParent(this);
 
@@ -27,7 +27,7 @@ Mainsens::Mainsens(QWidget *parent)
     QPushButton *backButton=new QPushButton(this);
     backButton->setText("退出游戏");
     backButton->setFixedSize(80,80);
-    backButton->move(500,300);
+    backButton->move(500,50);
     //radius设置为按钮边长的一半就可以变成圆形了
     backButton->setStyleSheet("QPushButton{border-radius:40px;\
                                       color:rgb(255,255,255);\
@@ -89,6 +89,15 @@ void Mainsens::initSence()
         moveFlag[i]=false;
     }
 
+    //创建积分器
+    QFont ft;
+    ft.setPointSize(26);
+    strOfscore ="0";
+    score =new QLabel(this);
+    score->setText(strOfscore);
+    score->setFixedSize(100,100);
+    score->move(530,260);
+    score->setFont(ft);
     //测试代码
 
 }
@@ -114,7 +123,7 @@ void Mainsens::updatePosition()
 
           //当玩家被击落后，更新为未出场状态，飞机回到初始位置
           m_plane_hero.stateOfReady=false;
-          m_plane_hero.m_Plane_X=(screeWidth-m_plane_hero.m_heroPlane.width())/2+250;
+          m_plane_hero.m_Plane_X=(screeWidth-m_plane_hero.m_heroPlane.width())/2+240;
           m_plane_hero.m_Plane_Y=(screeWidth-m_plane_hero.m_heroPlane.height())/2+300;
           //更新边框位置，跟图像保持一致
           m_plane_hero.m_heroPlaneRect.moveTo(m_plane_hero.m_Plane_X,m_plane_hero.m_Plane_Y);
@@ -136,6 +145,10 @@ void Mainsens::updatePosition()
       if(bombPlayer.bomb_state==false){
          bombPlayer.updateInfo();
       }
+
+      //更新玩家分数
+      strOfscore = QString::number(m_plane_hero.scoersOfPlayer, 10);
+      score->setText(strOfscore);
 
 
 }
@@ -349,6 +362,9 @@ void Mainsens::colliDetec()
                     m_plane_hero.weaponLeft.bullets[i].bullet_state=true;
                     enemPlaneS[m].enemy_state=true;
 
+                    //得分
+                    m_plane_hero.scoersOfPlayer++;
+
 
 
                     //碰撞后的爆炸效果
@@ -371,7 +387,8 @@ void Mainsens::colliDetec()
                         .enemyPlane_rect)){
                     m_plane_hero.weaponRight.bullets[i].bullet_state=true;
                     enemPlaneS[m].enemy_state=true;
-
+                    //得分
+                    m_plane_hero.scoersOfPlayer++;
 
                     for(int s=0;s<bombNum;s++){
                         if(bombs[s].bomb_state){
@@ -394,6 +411,8 @@ void Mainsens::colliDetec()
             m_plane_hero.stateOfLife=false;
             enemPlaneS[m].enemy_state=true;
 
+            //得分清零
+            m_plane_hero.scoersOfPlayer=0;
             //碰撞后的爆炸效果
             if(bombPlayer.bomb_state){
                 QSound::play(bombBgmPath);
@@ -410,10 +429,7 @@ void Mainsens::colliDetec()
     }
 }
 
-/*void Mainsens::getUI(UIgame *UI)
-{
-    //gameUI=UI;
-}*/
+
 
 void Mainsens::functionSlot()
 {

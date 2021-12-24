@@ -8,7 +8,7 @@
 #include "enemyplane.h"
 #include "bomb.h"
 #include "uigame.h"
-//extern UIgame* UI;
+#include <QLabel>
 class Mainsens : public QWidget
 {
     Q_OBJECT
@@ -90,8 +90,9 @@ public:
     bool moveFlag[4];
 
 private:
-    //UI界面
-    //UIgame* gameUI;
+    //记分
+    QLabel* score;
+    QString strOfscore;
 
     //测试代码
 

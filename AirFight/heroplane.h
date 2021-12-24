@@ -32,6 +32,8 @@ public:
     int m_Plane_X;
     int m_Plane_Y;
 
+    //玩家得分
+    int scoersOfPlayer;
     //玩家存活标志
     bool stateOfLife;
 

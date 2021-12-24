@@ -7,7 +7,7 @@ heroPlane::heroPlane()
     m_heroPlane.load(heroPlanPath);
 
    //初始化飞机坐标
-    m_Plane_X=(screeWidth-m_heroPlane.width())/2+250;
+    m_Plane_X=(screeWidth-m_heroPlane.width())/2+240;
     m_Plane_Y=(screehight-m_heroPlane.height())/2+300;
 
   //初始化检测边框
@@ -22,6 +22,8 @@ heroPlane::heroPlane()
     stateOfReady=false;
     //武器发射标志
     trigger=false;
+    //初始化玩家得分
+    scoersOfPlayer=0;
 
 }
 
