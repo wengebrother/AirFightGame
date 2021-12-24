@@ -18,12 +18,21 @@ Mainsens::Mainsens(QWidget *parent)
 
     //添加出场按钮
     QPushButton *fireButton=new QPushButton(this);
-    fireButton->setText("出发");
+    fireButton->setText("起飞");
     fireButton->move(500,400);
+    fireButton->setFixedSize(100,100);
     //fireButton->setParent(this);
+
+
     QPushButton *backButton=new QPushButton(this);
-    backButton->setText("返回UI界面");
+    backButton->setText("退出游戏");
+    backButton->setFixedSize(80,80);
     backButton->move(500,300);
+    //radius设置为按钮边长的一半就可以变成圆形了
+    backButton->setStyleSheet("QPushButton{border-radius:40px;\
+                                      color:rgb(255,255,255);\
+                                 border-image:url(:/resFlie/clip1.png);\
+                              }");
 
 
     //连接信号
@@ -54,6 +63,8 @@ void Mainsens::initSence()
     //加载图标
     setWindowIcon(QIcon(gameIconPath));
 
+    //隐藏边框
+    setWindowFlags(Qt::FramelessWindowHint|Qt::WindowStaysOnTopHint);
     //设置定时器
     m_Timer.setInterval(gameTimeRate);
 

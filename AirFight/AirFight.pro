@@ -23,6 +23,7 @@ SOURCES += \
     main.cpp \
     mainsens.cpp \
     map.cpp \
+    newpushbutton.cpp \
     uigame.cpp \
     weapon.cpp
 
@@ -34,6 +35,7 @@ HEADERS += \
     heroplane.h \
     mainsens.h \
     map.h \
+    newpushbutton.h \
     uigame.h \
     weapon.h
 
@@ -41,4 +43,8 @@ HEADERS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    res.qrc
+
 

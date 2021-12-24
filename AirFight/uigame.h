@@ -4,12 +4,17 @@
 #include <QWidget>
 #include <QPushButton>
 #include "mainsens.h"
+#include "map.h"
 class UIgame : public QWidget
 {
     Q_OBJECT
 public:
     explicit UIgame(QWidget *parent = nullptr);
     //~UIgame();
+
+    void paintEvent(QPaintEvent *);
+
+
 
 signals:
 
@@ -19,7 +24,9 @@ public slots:
 
 public:
     QPushButton* start_btn;
-    //Mainsens* sens;
+    QPixmap UI_map;
+    QPixmap UI_button;
+    Map testMap;
 
 };
 

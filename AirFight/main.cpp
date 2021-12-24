@@ -11,13 +11,11 @@ int main(int argc, char *argv[])
     //注册二进制资源
     QResource::registerResource(gameRCC_PATH);
 
+    //UI界面要先创建
     UIgame myUI;
     UI=&myUI;
     myUI.show();
+
     Mainsens w;
-
-
-
-
     return a.exec();
 }

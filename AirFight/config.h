@@ -14,7 +14,9 @@
 #define gameIconPath "D:/Learn/QTlearnProject/AirFight/AirFight/resFlie/bitbug_favicon.ico"
 #define gameTimeRate 10 //定时器更新周期 单位毫秒
 
-
+/*****UI参数配置********/
+#define UImapPath "D:/Learn/QTlearnProject/AirFight/AirFight/resFlie/UI12.png"
+#define UIbuttomPath "D:/Learn/QTlearnProject/AirFight/AirFight/resFlie/clipboard.png"
 /********地图参数配置************/
 #define gameMapPath "D:/Learn/QTlearnProject/AirFight/AirFight/resFlie/background.png"
 #define gameMapRollSpeed 2

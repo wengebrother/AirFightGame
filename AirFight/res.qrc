@@ -3,6 +3,7 @@
         <file>resFlie/again.png</file>
         <file>resFlie/background.png</file>
         <file>resFlie/background.wav</file>
+        <file>resFlie/bitbug_favicon.ico</file>
         <file>resFlie/bomb.png</file>
         <file>resFlie/bomb_supply.png</file>
         <file>resFlie/bullet_supply.png</file>
@@ -40,5 +41,8 @@
         <file>resFlie/pause_pressed.png</file>
         <file>resFlie/resume_nor.png</file>
         <file>resFlie/resume_pressed.png</file>
+        <file>resFlie/UI12.png</file>
+        <file>resFlie/clipboard.png</file>
+        <file>resFlie/clip1.png</file>
     </qresource>
 </RCC>
