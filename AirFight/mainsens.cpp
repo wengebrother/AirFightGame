@@ -24,6 +24,7 @@ Mainsens::Mainsens(QWidget *parent)
     //fireButton->setParent(this);
 
 
+
     QPushButton *backButton=new QPushButton(this);
     backButton->setText("退出游戏");
     backButton->setFixedSize(80,80);
@@ -114,6 +115,7 @@ void Mainsens::initSence()
 
     //测试代码
 
+
 }
 
 void Mainsens::updatePosition()
@@ -202,9 +204,27 @@ void Mainsens::iswinOfPlay()
          isWin=false;
          bgm->stop();
          winBgm->play();
+         QMessageBox:: StandardButton result= \
+         QMessageBox::information(this, "Title", "你赢了是否继续",\
+         QMessageBox::Yes|QMessageBox::No);
+         switch (result)
+         {
+         case QMessageBox::Yes:
+             //qDebug()<<"Yes";
+             bgm->play();
+             break;
+         case QMessageBox::No:
+             //qDebug()<<"NO";
+             back2UI();
+             bgm->play();
+
+             break;
+         default:
+             break;
+         }
+
+
     }
-
-
 
 }
 
@@ -499,14 +519,14 @@ void Mainsens::functionSlot()
 
 void Mainsens::getSubWidgetSignal()
 {
-    qDebug("获得UI信号");
+    //qDebug("获得UI信号");
     UI->hide();
     this->show();
 }
 
 void Mainsens::back2UI()
 {
-    qDebug("测试");
+    //qDebug("测试");
     this->hide();
     UI->show();
 }

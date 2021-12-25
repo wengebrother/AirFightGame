@@ -10,6 +10,7 @@
 #include "uigame.h"
 #include <QLabel>
 #include <QSound>
+#include <QMessageBox>
 class Mainsens : public QWidget
 {
     Q_OBJECT
@@ -100,9 +101,12 @@ public:
     bool isWin;
 
     //玩家胜利音效
-    QSound * winBgm;
+    QSound* winBgm;
     //背景音效
-    QSound *bgm;
+    QSound* bgm;
+
+    //对话框，玩家胜利之后
+    QMessageBox* winBox;
 
 private:
     //记分
