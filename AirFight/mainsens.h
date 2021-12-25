@@ -29,7 +29,6 @@ public:
     void updatePosition();
 
     //更新玩家胜利状态
-
     void iswinOfPlay();
 
     //启动游戏
@@ -42,10 +41,10 @@ public:
     void mouseMoveEvent(QMouseEvent * event);
 
     //鼠标点击事件
-    void mousePressEvent(QMouseEvent * event);
+    //void mousePressEvent(QMouseEvent * event);
 
     //鼠标松开事件
-    void mouseReleaseEvent(QMouseEvent *event);
+    //void mouseReleaseEvent(QMouseEvent *event);
 
     //重载按键按下事件
     void keyPressEvent(QKeyEvent *event);
@@ -63,13 +62,22 @@ public:
     void colliDetec();
 
     //
-    //void getUI(UIgame* UI);
+
     //测试代码
+
+
 public slots:
     void functionSlot();
     void getSubWidgetSignal();
     void back2UI();
     void changeNoOneStateOfPlayer();
+    void shootSlot();
+    void holdshootSlot();
+
+
+signals:
+    //暂时没用
+    void playerWinsignal();
 
 public:
     //定时器
@@ -107,6 +115,12 @@ public:
 
     //对话框，玩家胜利之后
     QMessageBox* winBox;
+
+    //发射按钮
+    QPushButton *shootButton;
+
+    //射击音效
+    QSound* qiangBgm;
 
 private:
     //记分

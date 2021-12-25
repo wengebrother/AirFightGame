@@ -46,5 +46,7 @@
         <file>resFlie/clip1.png</file>
         <file>resFlie/tubiao67.png</file>
         <file>resFlie/win.wav</file>
+        <file>resFlie/qgun_02.wav</file>
+        <file>resFlie/aircraft.wav</file>
     </qresource>
 </RCC>

@@ -1,8 +1,9 @@
 #include "heroplane.h"
 #include "config.h"
-
+#include <QSound>
 heroPlane::heroPlane()
 {
+
    //初始化加载飞机的资源
     m_heroPlane.load(heroPlanPath);
 
@@ -32,8 +33,11 @@ heroPlane::heroPlane()
 
 void heroPlane::weaponSystem_shoot()
 {
-    //扳机触发
-    if((trigger==true)&&(trigger_limit)){
+    //扳机触发 &&(trigger_limit)
+    if(trigger==true){
+        //枪击音效
+        //qiangBgm.play();
+
         //左侧武器发射子弹
         weaponLeft.getWeapon(m_Plane_X,m_Plane_Y);
         weaponLeft.weaponShoot(15,50);

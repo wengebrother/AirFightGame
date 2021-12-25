@@ -36,6 +36,9 @@ UIgame::UIgame(QWidget *parent) : QWidget(parent)
     //quit_btn->setIcon(QIcon(UIbuttomPath));
 
 
+    bgm = new QSound(UIbgmPath, this);
+    bgm->setLoops(-1);
+    bgm->play();
 
     //连接信号
     connect(this->start_btn,SIGNAL(clicked()),this,SLOT(sendSignal()));
@@ -57,8 +60,15 @@ void UIgame::paintEvent(QPaintEvent *)
 
 void UIgame::sendSignal()
 {
-    qDebug("发射信号");
-
+    //qDebug("发射信号");
+    bgm->stop();
     emit startGameSignal();
+
+}
+
+void UIgame::getFromMasensSlot()
+{
+    bgm->play();
+    bgm->setLoops(-1);
 
 }

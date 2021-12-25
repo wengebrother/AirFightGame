@@ -23,6 +23,10 @@ Mainsens::Mainsens(QWidget *parent)
     fireButton->setFixedSize(100,100);
     //fireButton->setParent(this);
 
+    shootButton=new QPushButton(this);
+    shootButton->setText("开火");
+    shootButton->setFixedSize(80,80);
+    shootButton->move(500,100);
 
 
     QPushButton *backButton=new QPushButton(this);
@@ -39,7 +43,10 @@ Mainsens::Mainsens(QWidget *parent)
     //连接信号
     connect(fireButton,SIGNAL(clicked()),this,SLOT(functionSlot()));
     connect(backButton,SIGNAL(clicked()),this,SLOT(back2UI()));
+    connect(backButton,SIGNAL(clicked()),UI,SLOT(getFromMasensSlot()));
     connect(UI,SIGNAL(startGameSignal()),this,SLOT(getSubWidgetSignal()));
+    connect(shootButton,SIGNAL(pressed()),this,SLOT(shootSlot()));
+    connect(shootButton,SIGNAL(released()),this,SLOT(holdshootSlot()));
     connect(fireButton,SIGNAL(clicked()),this,SLOT(changeNoOneStateOfPlayer()));
     //启动游戏
     playGame();
@@ -55,6 +62,7 @@ Mainsens::~Mainsens()
 
 void Mainsens::initSence()
 {
+
 
     //设置窗口固定尺寸
     setFixedSize(screeWidth,screehight);
@@ -182,6 +190,13 @@ void Mainsens::updatePosition()
 
       }
 
+      //判断是否停止播放射击音效
+      if(m_plane_hero.trigger==false){
+
+
+          qiangBgm->stop();
+      }
+
 
 
 }
@@ -191,6 +206,7 @@ void Mainsens::iswinOfPlay()
 
     //更新玩家胜利状态判断
     if(m_plane_hero.scoersOfPlayer>=winFlagNum){
+        //分数必须清零，否则将无限进入这个判断，导致胜利音频播放有问题
         m_plane_hero.scoersOfPlayer=0;
         isWin=true;
     }
@@ -198,12 +214,13 @@ void Mainsens::iswinOfPlay()
         isWin=false;
     }
 
-    //胜利之后的音乐特效
+    //胜利之后的音乐特效及窗口提示
     if(isWin){
 
          isWin=false;
          bgm->stop();
-         winBgm->play();
+         winBgm->play();//播放胜利音频
+         //显示互动消息窗口，让玩家判断是否继续游戏
          QMessageBox:: StandardButton result= \
          QMessageBox::information(this, "Title", "你赢了是否继续",\
          QMessageBox::Yes|QMessageBox::No);
@@ -216,7 +233,7 @@ void Mainsens::iswinOfPlay()
          case QMessageBox::No:
              //qDebug()<<"NO";
              back2UI();
-             bgm->play();
+             bgm->stop();
 
              break;
          default:
@@ -232,10 +249,14 @@ void Mainsens::playGame()
 {
     //启动背景音乐
     bgm = new QSound(bgmPath, this);
-    bgm->setLoops(-1);
-    bgm->play();
 
+
+    //创建胜利音效
     winBgm = new QSound(winBgmPath, this);
+
+
+    //创建射击音效
+    qiangBgm=new QSound(qiangBgmPath, this);
     //启动定时器
     m_Timer.start();
     //监听定时器发出的信号
@@ -341,11 +362,13 @@ void Mainsens::mouseMoveEvent(QMouseEvent *event)
 
 }
 
+/*
 void Mainsens::mousePressEvent(QMouseEvent *event)
 {
     if(event->button()==Qt::LeftButton){
 
-     m_plane_hero.trigger=true;
+     //m_plane_hero.trigger=true;
+
     }
 
 }
@@ -353,14 +376,17 @@ void Mainsens::mousePressEvent(QMouseEvent *event)
 
 void Mainsens::mouseReleaseEvent(QMouseEvent *event)
 {
+
+    //m_plane_hero.qiangBgm.stop();
     if(event->button()==Qt::LeftButton){
 
-     m_plane_hero.trigger=false;
+     //m_plane_hero.trigger=false;
+
     }
 
 
 
-}
+}*/
 
 
 void Mainsens::keyPressEvent(QKeyEvent *event)
@@ -522,20 +548,43 @@ void Mainsens::getSubWidgetSignal()
     //qDebug("获得UI信号");
     UI->hide();
     this->show();
+    bgm->play();
+    bgm->setLoops(-1);
+
+
 }
 
 void Mainsens::back2UI()
 {
     //qDebug("测试");
+    bgm->stop();
     this->hide();
     UI->show();
+    UI->bgm->play();
+    UI->bgm->setLoops(-1);
 }
 
 void Mainsens::changeNoOneStateOfPlayer()
 {
     m_plane_hero.noOneTime=500;//5秒
     m_plane_hero.noOneState=true;
-    qDebug("进入隐身状态");
+    //qDebug("进入隐身状态");
+}
+
+void Mainsens::shootSlot()
+{
+    m_plane_hero.trigger=true;
+    qiangBgm->setLoops(-1);
+    qiangBgm->play();
+
+}
+
+void Mainsens::holdshootSlot()
+{
+
+    m_plane_hero.trigger=false;
+    //qiangBgm->stop();
+    //qDebug("停止射击");
 }
 
 void Mainsens::moveControl()

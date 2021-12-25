@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include "mainsens.h"
 #include "map.h"
+#include <QSound>
 class UIgame : public QWidget
 {
     Q_OBJECT
@@ -22,6 +23,7 @@ signals:
     void quitAppSignal();
 public slots:
      void sendSignal();
+     void getFromMasensSlot();
 
 public:
     QPushButton* start_btn;
@@ -29,6 +31,7 @@ public:
     QPixmap UI_map;
     QPixmap UI_button;
     Map testMap;
+    QSound* bgm;
 
 };
 

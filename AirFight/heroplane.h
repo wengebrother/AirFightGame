@@ -6,8 +6,11 @@
 #include "weapon.h"
 #include "config.h"
 #include <QDebug>
-class heroPlane
+#include <QSound>
+#include <QWidget>
+class heroPlane : public QWidget
 {
+
 public:
     heroPlane();
 
@@ -51,6 +54,8 @@ public:
     Weapon weaponLeft;
     bool trigger; //扳机
     bool trigger_limit;//鼠标必须在场景中才可以击发
+
+
 
 };
 
