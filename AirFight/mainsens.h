@@ -9,6 +9,7 @@
 #include "bomb.h"
 #include "uigame.h"
 #include <QLabel>
+#include <QSound>
 class Mainsens : public QWidget
 {
     Q_OBJECT
@@ -25,6 +26,11 @@ public:
     //更新游戏元素的坐标
 
     void updatePosition();
+
+    //更新玩家胜利状态
+
+    void iswinOfPlay();
+
     //启动游戏
     void playGame();
 
@@ -89,6 +95,14 @@ public:
 
     //键盘移动控制标志
     bool moveFlag[4];
+
+    //胜利判定标志
+    bool isWin;
+
+    //玩家胜利音效
+    QSound * winBgm;
+    //背景音效
+    QSound *bgm;
 
 private:
     //记分

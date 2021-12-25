@@ -72,6 +72,8 @@ void Mainsens::initSence()
     //初始化敌机出场间隔记时参数
     enemPlaneOut_count=0;
 
+    //升力判定标志初始化
+    isWin=false;
 
     //初始化爆炸效果路径
    bombPlayer.str=bombPlayerPicPath;
@@ -162,6 +164,8 @@ void Mainsens::updatePosition()
       strOfscore =QString("击落：%1").arg(m_plane_hero.scoersOfPlayer);
       score->setText(strOfscore);
 
+
+
       //更新玩家的时间显示
        strOfTime=QString("隐身：%1").arg(m_plane_hero.noOneTime/100);
        noOneTimeLabel->setText(strOfTime);
@@ -180,12 +184,38 @@ void Mainsens::updatePosition()
 
 }
 
+void Mainsens::iswinOfPlay()
+{
+
+    //更新玩家胜利状态判断
+    if(m_plane_hero.scoersOfPlayer>=winFlagNum){
+        m_plane_hero.scoersOfPlayer=0;
+        isWin=true;
+    }
+    else{
+        isWin=false;
+    }
+
+    //胜利之后的音乐特效
+    if(isWin){
+
+         isWin=false;
+         bgm->stop();
+         winBgm->play();
+    }
+
+
+
+}
+
 void Mainsens::playGame()
 {
     //启动背景音乐
-    QSound *bgm = new QSound(bgmPath, this);
-       bgm->setLoops(-1);
-       bgm->play();
+    bgm = new QSound(bgmPath, this);
+    bgm->setLoops(-1);
+    bgm->play();
+
+    winBgm = new QSound(winBgmPath, this);
     //启动定时器
     m_Timer.start();
     //监听定时器发出的信号
@@ -194,6 +224,7 @@ void Mainsens::playGame()
     updatePosition();
     colliDetec();//子弹和敌机的碰撞检测
     moveControl();
+    iswinOfPlay();
     update();
     });
 
@@ -391,7 +422,6 @@ void Mainsens::colliDetec()
 
                     //得分
                     m_plane_hero.scoersOfPlayer++;
-
 
 
                     //碰撞后的爆炸效果

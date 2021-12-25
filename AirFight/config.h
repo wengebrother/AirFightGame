@@ -13,7 +13,7 @@
 #define gameRCC_PATH "./plane.rcc"
 #define gameIconPath "D:/Learn/QTlearnProject/AirFight/AirFight/resFlie/bitbug_favicon.ico"
 #define gameTimeRate 10 //定时器更新周期 单位毫秒
-
+#define winFlagNum 10 //玩家击落敌机数量，胜利的判断标志
 /*****UI参数配置********/
 #define UImapPath "D:/Learn/QTlearnProject/AirFight/AirFight/resFlie/UI12.png"
 #define UIbuttomPath "D:/Learn/QTlearnProject/AirFight/AirFight/resFlie/clipboard.png"
@@ -54,6 +54,7 @@
 /************音效参数配置**********/
 #define bgmPath ":/resFlie/background.wav"
 #define bombBgmPath ":/resFlie/down.wav"
+#define winBgmPath ":/resFlie/win.wav"
 
 
 #endif // CONFIG_H
