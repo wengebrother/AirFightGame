@@ -23,10 +23,14 @@ Mainsens::Mainsens(QWidget *parent)
     fireButton->setFixedSize(100,100);
     //fireButton->setParent(this);
 
+    //射击按钮
     shootButton=new QPushButton(this);
     shootButton->setText("开火");
     shootButton->setFixedSize(80,80);
     shootButton->move(500,100);
+    //shootButton->setAutoRepeat(true);//开启长按
+    //shootButton->setAutoRepeatDelay(1000);//触发长按的时间
+    //shootButton->setAutoRepeatInterval(800);按钮操作间隔
 
 
     QPushButton *backButton=new QPushButton(this);
@@ -120,6 +124,11 @@ void Mainsens::initSence()
     noOneTimeLabel->setFont(ft);
 
 
+    //可以播放放射击声音
+    isShootSound=true;
+
+    //初始化射击按钮定时
+    countButtonTime=80;
 
     //测试代码
 
@@ -190,12 +199,24 @@ void Mainsens::updatePosition()
 
       }
 
-      //判断是否停止播放射击音效
-      if(m_plane_hero.trigger==false){
+      //判断是否播放射击声音
+      if(m_plane_hero.trigger&&isShootSound){
+          isShootSound=false;
+           qiangBgm->play();
+           //qiangBgm->setLoops(1);
 
-
-          qiangBgm->stop();
+           //qDebug("进入判断");
       }
+
+      if(!isShootSound){
+
+          countButtonTime--;
+          if(countButtonTime<=0){
+              isShootSound=true;
+              countButtonTime=80;
+          }
+      }
+
 
 
 
@@ -574,14 +595,15 @@ void Mainsens::changeNoOneStateOfPlayer()
 void Mainsens::shootSlot()
 {
     m_plane_hero.trigger=true;
-    qiangBgm->setLoops(-1);
-    qiangBgm->play();
+    //qiangBgm->setLoops(-1);
+
+    //qDebug("射击");
 
 }
 
 void Mainsens::holdshootSlot()
 {
-
+    isShootSound=true;
     m_plane_hero.trigger=false;
     //qiangBgm->stop();
     //qDebug("停止射击");

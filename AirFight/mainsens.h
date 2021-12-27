@@ -122,6 +122,12 @@ public:
     //射击音效
     QSound* qiangBgm;
 
+    //射击音效标志
+    bool isShootSound;
+
+    //射击按钮定时
+    int countButtonTime;
+
 private:
     //记分
     QLabel* score;
@@ -130,6 +136,7 @@ private:
     //记录无敌时间
     QLabel* noOneTimeLabel;
     QString strOfTime ;
+
     //测试代码
 
 
