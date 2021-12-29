@@ -151,6 +151,11 @@ void Mainsens::updatePosition()
           }
       }
 
+      //更新Boss位置
+      bossPlane.enemyPlane_x=20;
+      bossPlane.enemyPlane_x=20;
+
+
       //更新玩家生命状态
       if(m_plane_hero.stateOfLife==false){
 
@@ -307,6 +312,9 @@ void Mainsens::paintEvent(QPaintEvent *)
 
        }
 
+       //绘制Boss
+       painter.drawPixmap(bossPlane.enemyPlane_x,bossPlane.enemyPlane_y,\
+                          bossPlane.enemyBoss_pic);
 
 
        //绘制子弹

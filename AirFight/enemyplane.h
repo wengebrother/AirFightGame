@@ -7,6 +7,7 @@ class EnemyPlane
 {
 public:
     EnemyPlane();
+    virtual ~ EnemyPlane();
 
     //更新坐标
     void updatePos();
@@ -15,7 +16,8 @@ public:
     //敌机对象资源
     QPixmap enemyPlane_pic;
 
-    //位置
+
+    //敌机位置
     int enemyPlane_x;
     int enemyPlane_y;
 

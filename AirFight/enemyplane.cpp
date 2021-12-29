@@ -15,7 +15,12 @@ EnemyPlane::EnemyPlane()
     //敌机速度
     enemyPlane_speed=speed;
     //敌机状态
-     enemy_state=true;
+    enemy_state=true;
+}
+
+EnemyPlane::~EnemyPlane()
+{
+
 }
 
 void EnemyPlane::updatePos()

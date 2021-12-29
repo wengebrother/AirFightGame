@@ -11,6 +11,7 @@
 #include <QLabel>
 #include <QSound>
 #include <QMessageBox>
+#include "bossplane.h"
 class Mainsens : public QWidget
 {
     Q_OBJECT
@@ -91,6 +92,9 @@ public:
 
     //敌机
     EnemyPlane enemPlaneS[enemNum];
+
+    //Boss
+    BossPlane bossPlane;
 
     //敌机出场间隔记时参数
     int enemPlaneOut_count;
