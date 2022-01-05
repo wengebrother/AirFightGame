@@ -35,8 +35,6 @@ void heroPlane::weaponSystem_shoot()
 {
     //扳机触发 &&(trigger_limit)
     if(trigger==true){
-        //枪击音效
-        //qiangBgm.play();
 
         //左侧武器发射子弹
         weaponLeft.getWeapon(m_Plane_X,m_Plane_Y);

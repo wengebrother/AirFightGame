@@ -21,6 +21,8 @@ public:
     int enemyPlane_x;
     int enemyPlane_y;
 
+
+
     //边框检测
     QRect enemyPlane_rect;
 

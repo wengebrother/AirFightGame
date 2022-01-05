@@ -34,6 +34,8 @@
 #define enemPlanePath ":/resFlie/enemy1.png"
 #define enemBossPath ":/resFlie/enemy3_n2.png"
 
+
+
 /**********子弹的配置数据**********/
 #define bulletPath ":/resFlie/bullet2.png"
 #define bulletSpeed 5

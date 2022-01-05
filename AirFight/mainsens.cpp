@@ -144,16 +144,16 @@ void Mainsens::updatePosition()
        m_plane_hero.weaponSystem_shoot();
 
       //更新敌机坐标
-
+/*
       for(int i=0;i<enemNum;i++){
           if(enemPlaneS[i].enemy_state==false){
               enemPlaneS[i].updatePos();
           }
-      }
+      }*/
 
       //更新Boss位置
-      bossPlane.enemyPlane_x=20;
-      bossPlane.enemyPlane_x=20;
+      bossPlane.updateBossPos();
+
 
 
       //更新玩家生命状态
@@ -222,7 +222,8 @@ void Mainsens::updatePosition()
           }
       }
 
-
+     //更新boss血条比例
+      bossPlane.rateOfBlood=1.0*bossPlane.nowHp/bossPlane.bloodOfLife;
 
 
 }
@@ -300,12 +301,17 @@ void Mainsens::playGame()
 
 void Mainsens::paintEvent(QPaintEvent *)
 {
+       QBrush red_brush(QColor("#F20900"));
        QPainter painter(this);
        //绘制背景
        painter.drawPixmap(0,m_map.m_map1_posY,m_map.m_map1);
        painter.drawPixmap(0,m_map.m_map2_posY,m_map.m_map2);
 
-
+       //绘制血条
+       painter.setBrush(red_brush);
+       painter.drawRect(bossPlane.enemyPlane_x+35,\
+                        bossPlane.enemyPlane_y+30,\
+                        bossPlane.bloodOfLife*bossPlane.rateOfBlood,10);
        //绘制英雄飞机
        if(m_plane_hero.stateOfLife){
            painter.drawPixmap(m_plane_hero.m_Plane_X,m_plane_hero.m_Plane_Y,m_plane_hero.m_heroPlane);
@@ -476,93 +482,133 @@ void Mainsens::enemPlaneComeOn()
 void Mainsens::colliDetec()
 {
     //遍历判断所有非空闲的子弹和敌机的边框是否重叠
-    for(int m=0;m<enemNum;m++){
-
-        if(enemPlaneS[m].enemy_state){
-            continue;
-        }
 
         //敌机与玩家子弹的碰撞检测
         for(int i=0;i<bulletNum;i++){
 
-            //左侧武器的子弹与敌机的碰撞检测
-            if(m_plane_hero.weaponLeft.bullets[i].bullet_state==false){
+            for(int m=0;m<enemNum;m++){
+                if(enemPlaneS[m].enemy_state){
+                    continue;
+                }
+                //左侧武器的子弹与敌机的碰撞检测
+                if(m_plane_hero.weaponLeft.bullets[i].bullet_state==false){
 
-                if(m_plane_hero.weaponLeft.bullets[i]\
-                   .bullet_rect.intersects(enemPlaneS[m]\
-                   .enemyPlane_rect)){
+                    if(m_plane_hero.weaponLeft.bullets[i]\
+                       .bullet_rect.intersects(enemPlaneS[m]\
+                       .enemyPlane_rect)){
 
-                    m_plane_hero.weaponLeft.bullets[i].bullet_state=true;
-                    enemPlaneS[m].enemy_state=true;
+                        m_plane_hero.weaponLeft.bullets[i].bullet_state=true;
+                        enemPlaneS[m].enemy_state=true;
 
-                    //得分
-                    m_plane_hero.scoersOfPlayer++;
+                        //得分
+                        m_plane_hero.scoersOfPlayer++;
 
 
-                    //碰撞后的爆炸效果
-                    for(int g=0;g<bombNum;g++){
-                        if(bombs[g].bomb_state){
-                            QSound::play(bombBgmPath);
-                            bombs[g].bomb_state=false;
-                            bombs[g].bomb_x=enemPlaneS[m].enemyPlane_x;
-                            bombs[g].bomb_y=enemPlaneS[m].enemyPlane_y;
-                            break;
+                        //碰撞后的爆炸效果
+                        for(int g=0;g<bombNum;g++){
+                            if(bombs[g].bomb_state){
+                                QSound::play(bombBgmPath);
+                                bombs[g].bomb_state=false;
+                                bombs[g].bomb_x=enemPlaneS[m].enemyPlane_x;
+                                bombs[g].bomb_y=enemPlaneS[m].enemyPlane_y;
+                                break;
+                            }
                         }
                     }
                 }
-            }
 
-            //右侧武器的子弹与敌机的碰撞检测
-             if(m_plane_hero.weaponRight.bullets[i].bullet_state==false){
-                if(m_plane_hero.weaponRight.bullets[i]\
-                        .bullet_rect.intersects(enemPlaneS[m]\
-                        .enemyPlane_rect)){
-                    m_plane_hero.weaponRight.bullets[i].bullet_state=true;
-                    enemPlaneS[m].enemy_state=true;
-                    //得分
-                    m_plane_hero.scoersOfPlayer++;
 
-                    for(int s=0;s<bombNum;s++){
-                        if(bombs[s].bomb_state){
-                            QSound::play(bombBgmPath);
-                            bombs[s].bomb_state=false;
-                            bombs[s].bomb_x=enemPlaneS[m].enemyPlane_x;
-                            bombs[s].bomb_y=enemPlaneS[m].enemyPlane_y;
-                            break;
+
+
+                //右侧武器的子弹与敌机的碰撞检测
+                 if(m_plane_hero.weaponRight.bullets[i].bullet_state==false){
+                    if(m_plane_hero.weaponRight.bullets[i]\
+                            .bullet_rect.intersects(enemPlaneS[m]\
+                            .enemyPlane_rect)){
+                        m_plane_hero.weaponRight.bullets[i].bullet_state=true;
+                        enemPlaneS[m].enemy_state=true;
+                        //得分
+                        m_plane_hero.scoersOfPlayer++;
+
+                        for(int s=0;s<bombNum;s++){
+                            if(bombs[s].bomb_state){
+                                QSound::play(bombBgmPath);
+                                bombs[s].bomb_state=false;
+                                bombs[s].bomb_x=enemPlaneS[m].enemyPlane_x;
+                                bombs[s].bomb_y=enemPlaneS[m].enemyPlane_y;
+                                break;
+                            }
                         }
                     }
                 }
+
+
+                 //敌机与玩家碰撞检测
+                  if(!m_plane_hero.noOneState){
+                      if(m_plane_hero.m_heroPlaneRect
+                         .intersects(enemPlaneS[m]
+                         .enemyPlane_rect)){
+
+                          m_plane_hero.stateOfLife=false;
+                          enemPlaneS[m].enemy_state=true;
+
+                          //得分清零
+                          m_plane_hero.scoersOfPlayer=0;
+                          //碰撞后的爆炸效果
+                          if(bombPlayer.bomb_state){
+                              QSound::play(bombBgmPath);
+                              bombPlayer.bomb_state=false;
+                              bombPlayer.bomb_x=m_plane_hero.m_Plane_X;
+                              bombPlayer.bomb_y=m_plane_hero.m_Plane_Y;
+                              //break;
+                          }
+                      }
+
+                  }
+
             }
+
+
+
+             //判断是否击中Boss
+             if(!bossPlane.enemy_state){
+
+
+                 if(m_plane_hero.weaponLeft.bullets[i].bullet_state==false){
+                     if(m_plane_hero.weaponLeft.bullets[i]\
+                             .bullet_rect\
+                             .intersects(bossPlane.enemyPlane_rect)){
+                         m_plane_hero.weaponLeft.bullets[i].bullet_state=true;
+                         if(bossPlane.nowHp>0){
+                            bossPlane.nowHp--;
+                         }
+
+                     }
+
+
+                 }
+
+                 if(m_plane_hero.weaponRight.bullets[i].bullet_state==false){
+                     if(m_plane_hero.weaponRight.bullets[i]\
+                             .bullet_rect\
+                             .intersects(bossPlane.enemyPlane_rect)){
+                      m_plane_hero.weaponRight.bullets[i].bullet_state=true;
+                      if(bossPlane.nowHp>0){
+                         bossPlane.nowHp--;
+                      }
+
+                         //qDebug("%d",bossPlane.nowHp);
+                     }
+
+                 }
+
+
+
+             }
+
+
         }
 
-       //敌机与玩家碰撞检测
-        if(!m_plane_hero.noOneState){
-            if(m_plane_hero.m_heroPlaneRect
-               .intersects(enemPlaneS[m]
-               .enemyPlane_rect)){
-
-                m_plane_hero.stateOfLife=false;
-                enemPlaneS[m].enemy_state=true;
-
-                //得分清零
-                m_plane_hero.scoersOfPlayer=0;
-                //碰撞后的爆炸效果
-                if(bombPlayer.bomb_state){
-                    QSound::play(bombBgmPath);
-                    bombPlayer.bomb_state=false;
-                    bombPlayer.bomb_x=m_plane_hero.m_Plane_X;
-                    bombPlayer.bomb_y=m_plane_hero.m_Plane_Y;
-                    //break;
-                }
-            }
-
-        }
-
-
-
-
-
-    }
 }
 
 
@@ -579,7 +625,7 @@ void Mainsens::getSubWidgetSignal()
     this->show();
     bgm->play();
     bgm->setLoops(-1);
-
+    bossPlane.enemy_state=false;
 
 }
 
@@ -623,23 +669,23 @@ void Mainsens::moveControl()
     int x=m_plane_hero.m_Plane_X;
     //
    if(moveFlag[0]){
-       y=m_plane_hero.m_Plane_Y-6;
+       y=m_plane_hero.m_Plane_Y-1;
 
    }
 
    if(moveFlag[1]){
-       y=m_plane_hero.m_Plane_Y+6;
+       y=m_plane_hero.m_Plane_Y+1;
 
    }
 
    if(moveFlag[2]){
 
-       x=m_plane_hero.m_Plane_X-6;
+       x=m_plane_hero.m_Plane_X-2;
    }
 
    if(moveFlag[3]){
 
-       x=m_plane_hero.m_Plane_X+6;
+       x=m_plane_hero.m_Plane_X+2;
    }
 
 
