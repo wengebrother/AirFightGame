@@ -106,6 +106,9 @@ public:
     //玩家爆炸场景
     Bomb bombPlayer;
 
+    //Boss爆炸场景
+    Bomb bombBoss;
+
     //键盘移动控制标志
     bool moveFlag[4];
 

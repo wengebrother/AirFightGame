@@ -96,6 +96,11 @@ void Mainsens::initSence()
    bombs[k].PathSet();
    }
 
+   bombBoss.str=bombBossPicPath;
+   bombBoss.PathBossSet();
+
+
+
     //随机数种子
     srand((unsigned int)time(NULL));
 
@@ -225,6 +230,19 @@ void Mainsens::updatePosition()
      //更新boss血条比例
       bossPlane.rateOfBlood=1.0*bossPlane.nowHp/bossPlane.bloodOfLife;
 
+      //更新Boss生命状态、更新Boss爆炸位置
+      if(bossPlane.nowHp==0){
+          bossPlane.enemy_state=true;
+          bombBoss.bomb_state=false;
+          bombBoss.bomb_x=bossPlane.enemyPlane_x;
+          bombBoss.bomb_y=bossPlane.enemyPlane_y;
+          bossPlane.nowHp=100;
+      }
+      if(bombBoss.bomb_state==false){
+          bombBoss.updateBossInfo();
+      }
+
+
 
 }
 
@@ -307,20 +325,28 @@ void Mainsens::paintEvent(QPaintEvent *)
        painter.drawPixmap(0,m_map.m_map1_posY,m_map.m_map1);
        painter.drawPixmap(0,m_map.m_map2_posY,m_map.m_map2);
 
-       //绘制血条
-       painter.setBrush(red_brush);
-       painter.drawRect(bossPlane.enemyPlane_x+35,\
-                        bossPlane.enemyPlane_y+30,\
-                        bossPlane.bloodOfLife*bossPlane.rateOfBlood,10);
+
        //绘制英雄飞机
        if(m_plane_hero.stateOfLife){
-           painter.drawPixmap(m_plane_hero.m_Plane_X,m_plane_hero.m_Plane_Y,m_plane_hero.m_heroPlane);
+           painter.drawPixmap(m_plane_hero.m_Plane_X,\
+                              m_plane_hero.m_Plane_Y,\
+                              m_plane_hero.m_heroPlane);
 
        }
 
        //绘制Boss
-       painter.drawPixmap(bossPlane.enemyPlane_x,bossPlane.enemyPlane_y,\
-                          bossPlane.enemyBoss_pic);
+       if(bossPlane.enemy_state==false){
+           painter.drawPixmap(bossPlane.enemyPlane_x,\
+                              bossPlane.enemyPlane_y,\
+                              bossPlane.enemyBoss_pic);
+           //绘制血条
+           painter.setBrush(red_brush);
+           painter.drawRect(bossPlane.enemyPlane_x+35,\
+                            bossPlane.enemyPlane_y+30,\
+                            bossPlane.bloodOfLife*bossPlane.rateOfBlood,10);
+
+       }
+
 
 
        //绘制子弹
@@ -369,6 +395,12 @@ void Mainsens::paintEvent(QPaintEvent *)
                    );
 
 
+       }
+
+       //绘制 Boss爆炸场景
+       if(bombBoss.bomb_state==false){
+           painter.drawPixmap(bombBoss.bomb_x,bombBoss.bomb_y\
+                              ,bombBoss.bomb_pics[bombBoss.bomb_index]);
        }
 
 
@@ -573,7 +605,7 @@ void Mainsens::colliDetec()
              //判断是否击中Boss
              if(!bossPlane.enemy_state){
 
-
+                     //左侧武器击中
                  if(m_plane_hero.weaponLeft.bullets[i].bullet_state==false){
                      if(m_plane_hero.weaponLeft.bullets[i]\
                              .bullet_rect\
@@ -587,7 +619,7 @@ void Mainsens::colliDetec()
 
 
                  }
-
+                    //右侧武器击中
                  if(m_plane_hero.weaponRight.bullets[i].bullet_state==false){
                      if(m_plane_hero.weaponRight.bullets[i]\
                              .bullet_rect\

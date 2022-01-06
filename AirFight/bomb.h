@@ -9,7 +9,9 @@ public:
     Bomb();
     //更新信息（图标 时间间隔）
     void updateInfo();
+    void updateBossInfo();
     void PathSet();
+    void PathBossSet();
 
 public:
     //爆炸效果资源

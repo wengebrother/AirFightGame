@@ -48,8 +48,11 @@
 #define bombPicPath  ":/resFlie/enemy1_down%1.png"
 //玩家爆炸路径
 #define bombPlayerPicPath  ":/resFlie/me_destroy_%1.png"
+//Boss爆炸路径
+#define bombBossPicPath    ":/resFlie/enemy3_down%1.png"
 #define bombNum    5  //爆炸数量
 #define bombMax     4   //爆炸图片最大索引
+#define bombBossMax     6   //爆炸图片最大索引
 #define bombIn     10    //时间间隔
 
 
